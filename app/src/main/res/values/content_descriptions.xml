@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="cd_settings">Go to settings</string>
+
+    <!-- Home -->
+    <string name="cd_home_search">Go to search</string>
+    <string name="cd_home_history">Go to history</string>
+
+</resources>

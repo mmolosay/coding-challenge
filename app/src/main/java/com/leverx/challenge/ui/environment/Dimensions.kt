@@ -1,4 +1,4 @@
-package com.leverx.challange.ui.environment
+package com.leverx.challenge.ui.environment
 
 import androidx.compose.ui.unit.dp
 

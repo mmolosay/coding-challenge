@@ -1,4 +1,4 @@
-package com.leverx.challange
+package com.leverx.challenge
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

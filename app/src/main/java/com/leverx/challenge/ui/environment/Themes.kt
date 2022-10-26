@@ -1,4 +1,4 @@
-package com.leverx.challange.ui.environment
+package com.leverx.challenge.ui.environment
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

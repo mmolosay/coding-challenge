@@ -12,7 +12,7 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "CodingChallange"
+rootProject.name = "CodingChallenge"
 include(
     ":app",
 )

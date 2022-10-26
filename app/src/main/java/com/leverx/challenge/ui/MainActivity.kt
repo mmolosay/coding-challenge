@@ -1,4 +1,4 @@
-package com.leverx.challange.ui
+package com.leverx.challenge.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setContent() {
         setContent {
-            
+
         }
     }
 }

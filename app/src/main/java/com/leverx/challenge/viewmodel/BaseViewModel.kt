@@ -1,4 +1,4 @@
-package com.leverx.challange.viewmodel
+package com.leverx.challenge.viewmodel
 
 import androidx.lifecycle.ViewModel
 

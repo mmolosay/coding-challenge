@@ -7,7 +7,7 @@ plugins {
 
 android {
 
-    namespace = "com.leverx.challange"
+    namespace = "com.leverx.challenge"
 
     compileSdk = 33
 
