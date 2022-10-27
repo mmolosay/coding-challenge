@@ -13,7 +13,6 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.leverx.challenge.ui.environment.AppTheme
@@ -36,7 +35,10 @@ private fun Search_Preview() {
 @Composable
 fun History() {
     LazyColumn(
-        contentPadding = PaddingValues(horizontal = Offset.Regular),
+        contentPadding = PaddingValues(
+            horizontal = Offset.Regular,
+            vertical = Offset.Halved
+        ),
         verticalArrangement = Arrangement.spacedBy(Offset.Regular),
     ) {
         item {
