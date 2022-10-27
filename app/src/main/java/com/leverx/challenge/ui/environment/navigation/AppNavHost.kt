@@ -14,6 +14,7 @@ import com.leverx.challenge.ui.components.Settings
 import com.leverx.challenge.ui.components.home.History
 import com.leverx.challenge.ui.components.home.Home
 import com.leverx.challenge.ui.components.home.Search
+import com.leverx.challenge.viewmodel.SearchViewModel
 
 @Composable
 fun AppNavHost(
@@ -71,8 +72,11 @@ private fun NavGraphBuilder.Search(
     navController: NavController,
 ) =
     composable(NavRoutes.Home.Search) {
+        val vm = SearchViewModel() // TODO: use DI
         Home(navController) {
-            Search()
+            Search(
+                vm = vm,
+            )
         }
     }
 

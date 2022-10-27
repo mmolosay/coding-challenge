@@ -9,3 +9,11 @@ object Padding {
     val Regular = 16.dp
     val Halved = Regular / 2
 }
+
+/**
+ * Spacing between layouts.
+ */
+object Spacing {
+    val Regular = 16.dp
+    val Halved = Regular / 2
+}
