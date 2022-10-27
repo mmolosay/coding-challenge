@@ -21,7 +21,7 @@ fun AppNavHost(
     navController: NavHostController,
 ) = NavHost(
     navController = navController,
-    startDestination = NavRoutes.Start
+    startDestination = NavRoutes.Home.route
 ) {
     Settings(navController)
 
@@ -62,7 +62,7 @@ private fun NavGraphBuilder.Settings(navController: NavController) =
 private fun NavGraphBuilder.homeGraph(navController: NavController) =
     navigation(
         startDestination = NavRoutes.Home.Search,
-        route = "graph-home"
+        route = NavRoutes.Home.route
     ) {
         Search(navController)
         History(navController)

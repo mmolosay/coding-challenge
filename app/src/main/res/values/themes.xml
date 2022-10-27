@@ -1,7 +1,16 @@
 <resources>
 
-    <style name="Theme.CodingChallange" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- nothing is here -->
+    <!-- top level DayNight theme -->
+    <style name="Theme.CodingChallenge" parent="Base.Theme.CodingChallenge" />
+
+    <!-- base custom theme to be overridden -->
+    <style name="Base.Theme.CodingChallenge" parent="Base.Theme.Material" />
+
+    <style name="Base.Theme.Material" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowBackground">@android:color/white</item>
+
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
 </resources>
