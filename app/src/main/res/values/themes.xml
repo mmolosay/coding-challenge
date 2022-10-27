@@ -1,16 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- top level DayNight theme -->
-    <style name="Theme.CodingChallenge" parent="Base.Theme.CodingChallenge" />
+    <!-- top-level DayNight theme -->
+    <style name="Theme.CodingChallenge.DayNight" parent="Theme.CodingChallenge.Light" />
 
-    <!-- base custom theme to be overridden -->
-    <style name="Base.Theme.CodingChallenge" parent="Base.Theme.Material" />
+    <!-- top-level themes to be overrode -->
+    <style name="Theme.CodingChallenge.Light" parent="Base.V24.Theme.CodingChallenge.Light" />
+    <style name="Theme.CodingChallenge.Dark" parent="Base.V24.Theme.CodingChallenge.Dark" />
 
-    <style name="Base.Theme.Material" parent="Theme.Material3.DayNight.NoActionBar">
+    <!-- base common theme to be overrode -->
+    <style name="Base.Theme.CodingChallenge" parent="Base.V24.Theme.CodingChallenge" />
+
+    <style name="Base.V24.Theme.CodingChallenge.Light" parent="Base.Theme.CodingChallenge">
         <item name="android:windowBackground">@android:color/white</item>
-
-        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="Base.V24.Theme.CodingChallenge.Dark" parent="Base.Theme.CodingChallenge">
+        <item name="android:windowBackground">@android:color/black</item>
+    </style>
+
+    <style name="Base.V24.Theme.CodingChallenge" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
 </resources>
