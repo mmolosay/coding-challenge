@@ -2,7 +2,9 @@ package com.leverx.challenge.ui.components.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
@@ -28,7 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.leverx.challenge.R
 import com.leverx.challenge.ui.environment.AppIcons
 import com.leverx.challenge.ui.environment.AppTheme
-import com.leverx.challenge.ui.environment.Padding
+import com.leverx.challenge.ui.environment.Offset
 import com.leverx.challenge.viewmodel.SearchViewModel
 
 // region Previews
@@ -71,6 +73,7 @@ fun Search(
         SearchBar(
             onSearchClick = onSearchClick,
         )
+        Spacer(modifier = Modifier.height(Offset.Halved))
         LazyColumn {
             /* TODO: implement when item type is introduced */
         }
@@ -86,7 +89,9 @@ private fun SearchBar(
     onSearchClick: (String) -> Unit,
 ) =
     SearchBar(
-        modifier = Modifier.padding(all = Padding.Regular),
+        modifier = Modifier
+            .padding(horizontal = Offset.Regular)
+            .padding(top = Offset.Halved),
         onSearchClick = onSearchClick,
     )
 

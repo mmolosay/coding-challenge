@@ -40,7 +40,7 @@ private fun Home_Preview() {
 // endregion
 
 /**
- * Root component of all 'Home' destinations.
+ * Root component of all 'Home' destinations, wrapped into common UI.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
