@@ -7,4 +7,7 @@
     <string name="cd_home_search">Go to search</string>
     <string name="cd_home_history">Go to history</string>
 
+    <!-- Home Search -->
+    <string name="cd_home_search_find">Search for images</string>
+
 </resources>

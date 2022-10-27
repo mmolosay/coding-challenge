@@ -18,7 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavBackStackEntry
 import com.leverx.challenge.R
 import com.leverx.challenge.ui.environment.AppIcons
 import com.leverx.challenge.ui.environment.navigation.NavRoutes
@@ -27,47 +26,29 @@ import com.leverx.challenge.ui.environment.navigation.NavRoutes
 
 @Composable
 @Preview
-private fun Home_Preview() {
-    Home(
+private fun HomeScreen_Preview() {
+    HomeScreen(
         currentRoute = NavRoutes.Home.Search,
-        navigateToSearch = { /*TODO*/ },
-        navigateToHistory = { /*TODO*/ },
-        navigateToSettings = { /*TODO*/ }) {
-
+        navigateToSearch = {},
+        navigateToHistory = {},
+        navigateToSettings = {}
+    ) {
+        // navigation content
     }
 }
 
 // endregion
 
 /**
- * Root component of all 'Home' destinations.
- */
-@Composable
-fun Home(
-    backStackEntry: NavBackStackEntry?,
-    navigateToSearch: () -> Unit,
-    navigateToHistory: () -> Unit,
-    navigateToSettings: () -> Unit,
-    content: @Composable () -> Unit
-) =
-    Home(
-        currentRoute = backStackEntry?.destination?.route,
-        navigateToSearch = navigateToSearch,
-        navigateToHistory = navigateToHistory,
-        navigateToSettings = navigateToSettings,
-        content = content
-    )
-
-/**
- * Low-level primitivized implementation of 'Home' UI component.
+ * Root component of all 'Home' destinations, wrapped into common UI.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Home(
+fun HomeScreen(
     currentRoute: String?,
+    navigateToSettings: () -> Unit,
     navigateToSearch: () -> Unit,
     navigateToHistory: () -> Unit,
-    navigateToSettings: () -> Unit,
     content: @Composable () -> Unit
 ) {
     Scaffold(
