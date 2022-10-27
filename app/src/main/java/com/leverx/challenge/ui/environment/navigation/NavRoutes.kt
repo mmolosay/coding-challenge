@@ -8,7 +8,7 @@ object NavRoutes {
     val Settings = "settings"
 
     object Home {
-        val route = "graph-home"
+        val route = "home"
         val Search = "search"
         val History = "history"
     }
