@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -47,6 +48,7 @@ fun History() {
     }
 }
 
+// TODO: add shimer for loading images
 @Composable
 private fun HistoryItem(
     query: String,
@@ -63,8 +65,8 @@ private fun HistoryItem(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .height(320.dp)
-                        .background(Color.LightGray)
+                        .height(160.dp)
+                        .background(LocalContentColor.current.copy(alpha = 0.08f))
                 )
             }
         }
