@@ -26,8 +26,8 @@ import com.leverx.challenge.ui.environment.navigation.NavRoutes
 
 @Composable
 @Preview
-private fun Home_Preview() {
-    Home(
+private fun HomeScreen_Preview() {
+    HomeScreen(
         currentRoute = NavRoutes.Home.Search,
         navigateToSearch = {},
         navigateToHistory = {},
@@ -44,7 +44,7 @@ private fun Home_Preview() {
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Home(
+fun HomeScreen(
     currentRoute: String?,
     navigateToSettings: () -> Unit,
     navigateToSearch: () -> Unit,

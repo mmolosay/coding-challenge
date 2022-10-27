@@ -2,6 +2,9 @@
 
     <string name="app_name">CodingChallenge</string>
 
+    <!-- Settings -->
+    <string name="settings">Settings</string>
+
     <!-- Home -->
     <!-- Search -->
     <string name="home_search_text_field_label">Search for photos</string>

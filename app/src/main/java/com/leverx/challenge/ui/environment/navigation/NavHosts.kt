@@ -10,10 +10,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.leverx.challenge.ui.components.Settings
 import com.leverx.challenge.ui.components.home.History
-import com.leverx.challenge.ui.components.home.Home
+import com.leverx.challenge.ui.components.home.HomeScreen
 import com.leverx.challenge.ui.components.home.Search
+import com.leverx.challenge.ui.components.settings.SettingsScreen
 import com.leverx.challenge.viewmodel.SearchViewModel
 
 // region Application host
@@ -38,7 +38,7 @@ private fun NavGraphBuilder.Settings(
     navController: NavController
 ) =
     composable(NavRoutes.Settings) {
-        Settings()
+        SettingsScreen()
     }
 
 /**
@@ -55,7 +55,7 @@ private fun NavGraphBuilder.Home(
     composable(NavRoutes.Home.route) {
         val homeNavController = rememberNavController() // individual one
         val backStackEntry by homeNavController.currentBackStackEntryAsState()
-        Home(
+        HomeScreen(
             currentRoute = backStackEntry?.destination?.route,
             navigateToSettings = { navController.navigateTo { Settings } },
             navigateToSearch = { homeNavController.navigateTo { NavRoutes.Home.Search } },
