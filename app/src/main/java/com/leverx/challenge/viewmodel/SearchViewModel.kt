@@ -10,9 +10,9 @@ class SearchViewModel : BaseViewModel() {
     }
 
     /**
-     *
+     * Obtain images from external source, match specified [query].
      */
-    fun findImages(query: String) {
+    fun fetchImages(query: String) {
         // TODO: implement
     }
 }

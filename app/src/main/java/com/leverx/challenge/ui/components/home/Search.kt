@@ -58,7 +58,7 @@ fun Search(
 ) =
     Search(
         onSearchClick = { query ->
-            vm.findImages(query)
+            vm.fetchImages(query)
         },
     )
 
