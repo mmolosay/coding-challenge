@@ -5,11 +5,6 @@ package com.leverx.challenge.ui.environment.navigation
  */
 object NavRoutes {
 
-    val Settings = "settings"
-
-    object Home {
-        val route = "home"
-        val Search = "search"
-        val History = "history"
-    }
+    val Search = "search"
+    val History = "history"
 }

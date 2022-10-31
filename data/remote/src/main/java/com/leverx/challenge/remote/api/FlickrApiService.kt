@@ -12,13 +12,12 @@ interface FlickrApiService {
     /**
      * Get images, matching specified [query].
      *
-     * Authentication-less.
+     * Authentication-less. API key is being added via `Interceptor`.
      *
      * [Endpoint documentation](https://www.flickr.com/services/api/flickr.photos.search.html)
      */
     @GET(
         "services/rest/?method=flickr.photos.search" +
-            "&api_key=”YOUR_KEY_HERE”" +
             "&format=json" +
             "&nojsoncallback=1" +
             "&safe_search=1"

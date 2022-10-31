@@ -5,7 +5,7 @@ package com.leverx.challenge.domain.model
  * Represents various data about some remote images.
  */
 data class RemoteImages(
-    val images: List<Image>
+    val images: List<Image>?
 ) {
 
     /**

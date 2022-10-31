@@ -9,7 +9,7 @@ data class ImagesRequest(
 data class ImagesResponse(
     @Json(name = "stat") val status: String?,
     @Json(name = "photos") val data: Data?,
-    @Json(name = "photo") val images: List<Image>,
+    @Json(name = "photo") val images: List<Image>?,
 ) {
 
     data class Data(

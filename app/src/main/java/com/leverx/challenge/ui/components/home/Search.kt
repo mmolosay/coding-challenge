@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.rounded.Search
@@ -27,11 +26,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.leverx.challenge.R
 import com.leverx.challenge.ui.environment.AppIcons
 import com.leverx.challenge.ui.environment.AppTheme
 import com.leverx.challenge.ui.environment.Offset
 import com.leverx.challenge.viewmodel.SearchViewModel
+import com.leverx.challenge.viewmodel.SearchViewModel.UiState
 
 // region Previews
 
@@ -41,9 +44,10 @@ import com.leverx.challenge.viewmodel.SearchViewModel
 @Composable
 private fun Search_Preview() {
     AppTheme {
-        Search(
-            onSearchClick = {},
-        )
+//        Search(
+//            uiState = ,
+//            onSearchClick = {},
+//        )
     }
 }
 
@@ -52,32 +56,75 @@ private fun Search_Preview() {
 /**
  * High-level master `Search` UI component.
  */
+@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun Search(
-    vm: SearchViewModel,
-) =
+    vm: SearchViewModel = hiltViewModel(),
+) {
+    val uiState by vm.uiState.collectAsStateWithLifecycle()
     Search(
+        uiState = uiState,
         onSearchClick = { query ->
             vm.fetchImages(query)
         },
     )
+}
 
 /**
- * Low-level primitivized implementation of 'Search' UI component.
+ * Implementation of 'Search' UI component.
  */
 @Composable
 fun Search(
+    uiState: UiState,
     onSearchClick: (String) -> Unit,
-) =
+) {
     Column {
         SearchBar(
             onSearchClick = onSearchClick,
         )
         Spacer(modifier = Modifier.height(Offset.Halved))
-        LazyColumn {
-            /* TODO: implement when item type is introduced */
-        }
+        SearchContent(uiState)
     }
+}
+
+
+/**
+ * Master 'Search' content UI component.
+ * Represents UI under [SearchBar] in some [uiState].
+ */
+@Composable
+private fun SearchContent(
+    uiState: UiState,
+) =
+    when (uiState) {
+        is UiState.Blank -> SearchContentBlank()
+        is UiState.Loading -> SearchContentLoading()
+        is UiState.Success -> SearchContentSuccess()
+    }
+
+/**
+ * Implementation of 'Search' content UI component's [UiState.Blank] state.
+ */
+@Composable
+private fun SearchContentBlank() {
+    // nothing
+}
+
+/**
+ * Implementation of 'Search' content UI component's [UiState.Loading] state.
+ */
+@Composable
+private fun SearchContentLoading() {
+    // nothing
+}
+
+/**
+ * Implementation of 'Search' content UI component's [UiState.Success] state.
+ */
+@Composable
+private fun SearchContentSuccess() {
+    // nothing
+}
 
 // region Search Bar
 
