@@ -37,14 +37,32 @@ class SearchViewModel @Inject constructor(
         val request = RemoteImagesRequest(query)
         val context = Dispatchers.IO + Job()
         this.getImagesJob = viewModelScope.launch(context) {
-            // TODO: abolish flow ^
-            getImages(request).collect { images ->
-                _uiState.update {
-                    UiState.Success(
-                        remoteImages = images.toPresentation(),
-                    )
-                }
+            try {
+                val images = getImages(request)
+                propagateSuccess(images.toPresentation())
+            } catch (e: Exception) { // TODO: specify exact type of exception(s) once occured
+                propagateFailure()
             }
+        }
+    }
+
+    /**
+     * Updates [uiState] with [UiState.Success] instance.
+     */
+    private fun propagateSuccess(images: RemoteImages) {
+        _uiState.update {
+            UiState.Success(
+                remoteImages = images,
+            )
+        }
+    }
+
+    /**
+     * Updates [uiState] with [UiState.Failure] instance.
+     */
+    private fun propagateFailure() {
+        _uiState.update {
+            UiState.Failure
         }
     }
 
@@ -60,5 +78,8 @@ class SearchViewModel @Inject constructor(
         class Success(
             val remoteImages: RemoteImages,
         ) : UiState
+
+        /** Failure during loading images. */
+        object Failure : UiState
     }
 }

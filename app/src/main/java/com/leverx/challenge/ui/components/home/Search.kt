@@ -1,7 +1,8 @@
 package com.leverx.challenge.ui.components.home
 
-import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +13,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -26,6 +28,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.structuralEqualityPolicy
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
@@ -87,58 +90,9 @@ fun Search(
             onSearchClick = onSearchClick,
         )
         Spacer(modifier = Modifier.height(Offset.Halved))
-        SearchContent(uiState)
+        SearchResult(uiState)
     }
 }
-
-
-/**
- * Master 'Search' content UI component.
- * Represents UI under [SearchBar] in some [uiState].
- */
-@Composable
-private fun SearchContent(
-    uiState: UiState,
-) =
-    when (uiState) {
-        is UiState.Blank -> SearchContentBlank()
-        is UiState.Loading -> SearchContentLoading()
-        is UiState.Success -> SearchContentSuccess(uiState)
-    }
-
-/**
- * Implementation of 'Search' content UI component's [UiState.Blank] state.
- */
-@Composable
-private fun SearchContentBlank() {
-    // nothing
-}
-
-/**
- * Implementation of 'Search' content UI component's [UiState.Loading] state.
- */
-@Composable
-private fun SearchContentLoading() {
-    // nothing
-}
-
-/**
- * Implementation of 'Search' content UI component's [UiState.Success] state.
- */
-@Composable
-private fun SearchContentSuccess(uiState: UiState.Success) =
-    LazyColumn {
-        items(
-            items = uiState.remoteImages.images ?: emptyList(),
-            key = { it.id },
-        ) { image ->
-            Log.d("QWERTY", image.url ?: "null")
-            AsyncImage(
-                model = image.url,
-                contentDescription = image.title,
-            )
-        }
-    }
 
 // region Search Bar
 
@@ -224,6 +178,63 @@ private fun SearchBarTrailingIcon(
             imageVector = AppIcons.Search,
             contentDescription = stringResource(R.string.cd_home_search_find)
         )
+    }
+
+// endregion
+
+// region Search result
+
+/**
+ * Master 'Search result' UI component.
+ * Represents search result, according to [uiState].
+ */
+@Composable
+private fun SearchResult(
+    uiState: UiState,
+) =
+    when (uiState) {
+        is UiState.Blank -> SearchResultBlank()
+        is UiState.Loading -> SearchResultLoading()
+        is UiState.Success -> SearchResultSuccess(uiState)
+        is UiState.Failure -> throw IllegalStateException("handle me!") // TODO
+    }
+
+/**
+ * Implementation of 'Search result' UI component's [UiState.Blank] state.
+ */
+@Composable
+private fun SearchResultBlank() {
+    // nothing
+}
+
+/**
+ * Implementation of 'Search result' UI component's [UiState.Loading] state.
+ */
+@Composable
+private fun SearchResultLoading() {
+    CircularProgressIndicator()
+}
+
+/**
+ * Implementation of 'Search result' UI component's [UiState.Success] state.
+ */
+@Composable
+private fun SearchResultSuccess(uiState: UiState.Success) =
+    LazyColumn(
+        contentPadding = PaddingValues(horizontal = Offset.Regular),
+        verticalArrangement = Arrangement.spacedBy(Offset.Halved),
+    ) {
+        items(
+            items = uiState.remoteImages.images ?: emptyList(),
+            key = { it.id },
+        ) { image ->
+            AsyncImage(
+                model = image.url,
+                contentDescription = image.title,
+                modifier = Modifier.fillMaxWidth(),
+                contentScale = ContentScale.FillWidth,
+            )
+        }
     }
 
 // endregion
