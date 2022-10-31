@@ -13,6 +13,9 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "CodingChallenge"
-include(
-    ":app",
-)
+
+include(":app")
+include(":data")
+include(":data:remote")
+include(":domain")
+include(":core")
