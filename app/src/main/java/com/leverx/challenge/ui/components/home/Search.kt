@@ -1,5 +1,7 @@
 package com.leverx.challenge.ui.components.home
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,8 +41,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
+import coil.size.Size
 import com.leverx.challenge.R
 import com.leverx.challenge.model.RemoteImages
 import com.leverx.challenge.ui.components.common.ImageDialog
@@ -240,40 +243,47 @@ private fun SearchResultLoading() =
  */
 @Composable
 private fun SearchResultSuccess(uiState: UiState.Success) =
-    Box {
-        var showImageDialog by remember { mutableStateOf(false) }
-
-        LazyColumn(
-            contentPadding = PaddingValues(horizontal = Offset.Regular),
-            verticalArrangement = Arrangement.spacedBy(Offset.Halved),
-        ) {
-            items(
-                items = uiState.remoteImages.images ?: emptyList(),
-                key = { it.id },
-            ) { image ->
-                ImageItem(image)
-            }
-        }
-
-        if (showImageDialog) {
-            ImageDialog(onDismissRequest = { showImageDialog = false }) {
-
-            }
+    LazyColumn(
+        modifier = Modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(horizontal = Offset.Regular),
+        verticalArrangement = Arrangement.spacedBy(Offset.Halved),
+    ) {
+        items(
+            items = uiState.remoteImages.images ?: emptyList(),
+            key = { it.id },
+        ) { image ->
+            ImageItem(image)
         }
     }
 
 @Composable
 private fun ImageItem(image: RemoteImages.Image) {
+    var showImageDialog by remember { mutableStateOf(false) }
+
     val model = ImageRequest.Builder(LocalContext.current)
         .data(image.url)
+        .size(Size.ORIGINAL)
         .crossfade(true)
         .build()
-    AsyncImage(
-        model = model,
+    val painter = rememberAsyncImagePainter(model)
+
+    Image(
+        painter = painter,
         contentDescription = image.title,
-        modifier = Modifier.fillMaxWidth(),
         contentScale = ContentScale.FillWidth,
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { showImageDialog = true },
     )
+
+    if (showImageDialog) {
+        ImageDialog(onDismissRequest = { showImageDialog = false }) {
+            Image(
+                painter = painter,
+                contentDescription = image.title,
+            )
+        }
+    }
 }
 
 // endregion
