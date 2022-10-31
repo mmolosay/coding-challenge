@@ -14,7 +14,9 @@ fun ImagesResponse.toDomain(): RemoteImages =
 
 private fun ImagesResponse.Image.toDomain(): RemoteImages.Image =
     RemoteImages.Image(
+        id = this.id,
         url = this.toUrl(),
+        title = this.title,
     )
 
 /**

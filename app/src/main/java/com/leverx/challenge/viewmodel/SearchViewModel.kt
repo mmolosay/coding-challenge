@@ -37,6 +37,7 @@ class SearchViewModel @Inject constructor(
         val request = RemoteImagesRequest(query)
         val context = Dispatchers.IO + Job()
         this.getImagesJob = viewModelScope.launch(context) {
+            // TODO: abolish flow ^
             getImages(request).collect { images ->
                 _uiState.update {
                     UiState.Success(

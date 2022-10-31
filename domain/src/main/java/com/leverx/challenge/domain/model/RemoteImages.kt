@@ -12,7 +12,9 @@ data class RemoteImages(
      * Represents not an image itself, but its remote source.
      */
     data class Image(
+        val id: Long?,
         val url: String?,
+        val title: String?,
     )
 }
 

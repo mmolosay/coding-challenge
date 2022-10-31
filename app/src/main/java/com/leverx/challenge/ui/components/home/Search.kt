@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.rounded.Search
@@ -44,10 +45,10 @@ import com.leverx.challenge.viewmodel.SearchViewModel.UiState
 @Composable
 private fun Search_Preview() {
     AppTheme {
-//        Search(
-//            uiState = ,
-//            onSearchClick = {},
-//        )
+        Search(
+            uiState = UiState.Blank,
+            onSearchClick = {},
+        )
     }
 }
 
@@ -99,7 +100,7 @@ private fun SearchContent(
     when (uiState) {
         is UiState.Blank -> SearchContentBlank()
         is UiState.Loading -> SearchContentLoading()
-        is UiState.Success -> SearchContentSuccess()
+        is UiState.Success -> SearchContentSuccess(uiState)
     }
 
 /**
@@ -122,9 +123,15 @@ private fun SearchContentLoading() {
  * Implementation of 'Search' content UI component's [UiState.Success] state.
  */
 @Composable
-private fun SearchContentSuccess() {
-    // nothing
-}
+private fun SearchContentSuccess(uiState: UiState.Success) =
+    LazyColumn {
+//        items(
+//            items = remoteImages.images,
+//            key = {},
+//        ) { image ->
+//            AsyncImage(model = image., contentDescription = )
+//        }
+    }
 
 // region Search Bar
 

@@ -14,5 +14,7 @@ fun DomainRemoteImages.toPresentation(): RemoteImages =
 
 private fun DomainRemoteImages.Image.toPresentation(): RemoteImages.Image =
     RemoteImages.Image(
+        id = this.id,
         url = this.url,
+        title = this.title,
     )
