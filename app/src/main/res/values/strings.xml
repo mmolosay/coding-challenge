@@ -8,5 +8,6 @@
     <!-- Home -->
     <!-- Search -->
     <string name="home_search_text_field_label">Search for photos</string>
+    <string name="home_search_blank">Use text field above to search for photos.</string>
 
 </resources>

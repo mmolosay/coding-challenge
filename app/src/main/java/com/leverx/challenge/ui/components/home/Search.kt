@@ -19,6 +19,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,6 +43,7 @@ import com.leverx.challenge.R
 import com.leverx.challenge.ui.environment.AppIcons
 import com.leverx.challenge.ui.environment.AppTheme
 import com.leverx.challenge.ui.environment.Offset
+import com.leverx.challenge.ui.environment.disabledContentColor
 import com.leverx.challenge.viewmodel.SearchViewModel
 import com.leverx.challenge.viewmodel.SearchViewModel.UiState
 
@@ -205,9 +207,17 @@ private fun SearchResult(
  * Implementation of 'Search result' UI component's [UiState.Blank] state.
  */
 @Composable
-private fun SearchResultBlank() {
-    // nothing
-}
+private fun SearchResultBlank() =
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text = stringResource(R.string.home_search_blank),
+            color = disabledContentColor(),
+            style = MaterialTheme.typography.bodySmall,
+        )
+    }
 
 /**
  * Implementation of 'Search result' UI component's [UiState.Loading] state.
@@ -216,7 +226,7 @@ private fun SearchResultBlank() {
 private fun SearchResultLoading() =
     Box(
         modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         CircularProgressIndicator()
     }
