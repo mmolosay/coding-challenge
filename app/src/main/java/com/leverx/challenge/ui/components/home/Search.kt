@@ -1,5 +1,6 @@
 package com.leverx.challenge.ui.components.home
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.rounded.Search
@@ -30,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.AsyncImage
 import com.leverx.challenge.R
 import com.leverx.challenge.ui.environment.AppIcons
 import com.leverx.challenge.ui.environment.AppTheme
@@ -125,12 +128,16 @@ private fun SearchContentLoading() {
 @Composable
 private fun SearchContentSuccess(uiState: UiState.Success) =
     LazyColumn {
-//        items(
-//            items = remoteImages.images,
-//            key = {},
-//        ) { image ->
-//            AsyncImage(model = image., contentDescription = )
-//        }
+        items(
+            items = uiState.remoteImages.images ?: emptyList(),
+            key = { it.id },
+        ) { image ->
+            Log.d("QWERTY", image.url ?: "null")
+            AsyncImage(
+                model = image.url,
+                contentDescription = image.title,
+            )
+        }
     }
 
 // region Search Bar

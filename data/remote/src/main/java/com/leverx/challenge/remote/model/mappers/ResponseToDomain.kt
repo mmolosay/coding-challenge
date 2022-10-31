@@ -9,7 +9,7 @@ import com.leverx.challenge.remote.model.ImagesResponse
 
 fun ImagesResponse.toDomain(): RemoteImages =
     RemoteImages(
-        images = images?.map { it.toDomain() },
+        images = this.data?.images?.map { it.toDomain() },
     )
 
 private fun ImagesResponse.Image.toDomain(): RemoteImages.Image =

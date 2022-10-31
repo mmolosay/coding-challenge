@@ -7,23 +7,23 @@ data class ImagesRequest(
 )
 
 data class ImagesResponse(
-    @Json(name = "stat") val status: String?,
-    @Json(name = "photos") val data: Data?,
-    @Json(name = "photo") val images: List<Image>?,
+    @field:Json(name = "stat") val status: String?,
+    @field:Json(name = "photos") val data: Data?,
 ) {
 
     data class Data(
-        @Json(name = "page") val page: Int?,
-        @Json(name = "pages") val pages: Int?,
-        @Json(name = "perpage") val resultsPerPage: Int?,
-        @Json(name = "total") val resultsTotal: Int?,
+        @field:Json(name = "page") val page: Int?,
+        @field:Json(name = "pages") val pages: Int?,
+        @field:Json(name = "perpage") val resultsPerPage: Int?,
+        @field:Json(name = "total") val resultsTotal: Int?,
+        @field:Json(name = "photo") val images: List<Image>?,
     )
 
     data class Image(
-        @Json(name = "id") val id: Long?,
-        @Json(name = "title") val title: String?,
-        @Json(name = "secret") val secret: String?,
-        @Json(name = "server") val server: Int?,
-        @Json(name = "farm") val farm: Int?,
+        @field:Json(name = "id") val id: Long?,
+        @field:Json(name = "title") val title: String?,
+        @field:Json(name = "secret") val secret: String?,
+        @field:Json(name = "server") val server: Int?,
+        @field:Json(name = "farm") val farm: Int?,
     )
 }

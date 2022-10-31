@@ -9,12 +9,13 @@ import com.leverx.challenge.domain.model.RemoteImages as DomainRemoteImages
 
 fun DomainRemoteImages.toPresentation(): RemoteImages =
     RemoteImages(
-        images = this.images?.map { it.toPresentation() },
+        images = this.images?.mapNotNull { it.toPresentation() },
     )
 
-private fun DomainRemoteImages.Image.toPresentation(): RemoteImages.Image =
-    RemoteImages.Image(
-        id = this.id,
+private fun DomainRemoteImages.Image.toPresentation(): RemoteImages.Image? {
+    return RemoteImages.Image(
+        id = this.id ?: return null, // we don't want images without valid ID
         url = this.url,
         title = this.title,
     )
+}
