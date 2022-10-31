@@ -21,10 +21,16 @@ fun inferColorScheme(
         Theme.DayNight -> if (isSystemInDarkMode) darkColorScheme else lightColorScheme
     }
 
+/**
+ * Returns [LocalContentColor] value with specified [alpha].
+ */
 @Composable
 fun translucentContentColor(alpha: Float): Color =
     LocalContentColor.current.copy(alpha = alpha)
 
+/**
+ * Returns [LocalContentColor] value in its disabled state.
+ */
 @Composable
 fun disabledContentColor(): Color =
     translucentContentColor(alpha = 0.4f)
