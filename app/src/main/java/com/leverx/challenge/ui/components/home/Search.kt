@@ -32,6 +32,7 @@ import androidx.compose.runtime.structuralEqualityPolicy
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,7 +40,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.leverx.challenge.R
+import com.leverx.challenge.model.RemoteImages
+import com.leverx.challenge.ui.components.common.ImageDialog
 import com.leverx.challenge.ui.environment.AppIcons
 import com.leverx.challenge.ui.environment.AppTheme
 import com.leverx.challenge.ui.environment.Offset
@@ -236,21 +240,40 @@ private fun SearchResultLoading() =
  */
 @Composable
 private fun SearchResultSuccess(uiState: UiState.Success) =
-    LazyColumn(
-        contentPadding = PaddingValues(horizontal = Offset.Regular),
-        verticalArrangement = Arrangement.spacedBy(Offset.Halved),
-    ) {
-        items(
-            items = uiState.remoteImages.images ?: emptyList(),
-            key = { it.id },
-        ) { image ->
-            AsyncImage(
-                model = image.url,
-                contentDescription = image.title,
-                modifier = Modifier.fillMaxWidth(),
-                contentScale = ContentScale.FillWidth,
-            )
+    Box {
+        var showImageDialog by remember { mutableStateOf(false) }
+
+        LazyColumn(
+            contentPadding = PaddingValues(horizontal = Offset.Regular),
+            verticalArrangement = Arrangement.spacedBy(Offset.Halved),
+        ) {
+            items(
+                items = uiState.remoteImages.images ?: emptyList(),
+                key = { it.id },
+            ) { image ->
+                ImageItem(image)
+            }
+        }
+
+        if (showImageDialog) {
+            ImageDialog(onDismissRequest = { showImageDialog = false }) {
+
+            }
         }
     }
+
+@Composable
+private fun ImageItem(image: RemoteImages.Image) {
+    val model = ImageRequest.Builder(LocalContext.current)
+        .data(image.url)
+        .crossfade(true)
+        .build()
+    AsyncImage(
+        model = model,
+        contentDescription = image.title,
+        modifier = Modifier.fillMaxWidth(),
+        contentScale = ContentScale.FillWidth,
+    )
+}
 
 // endregion
