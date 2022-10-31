@@ -1,10 +1,12 @@
 package com.leverx.challenge.ui.components.home
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -211,9 +213,13 @@ private fun SearchResultBlank() {
  * Implementation of 'Search result' UI component's [UiState.Loading] state.
  */
 @Composable
-private fun SearchResultLoading() {
-    CircularProgressIndicator()
-}
+private fun SearchResultLoading() =
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator()
+    }
 
 /**
  * Implementation of 'Search result' UI component's [UiState.Success] state.
