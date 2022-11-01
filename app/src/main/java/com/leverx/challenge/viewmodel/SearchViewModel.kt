@@ -34,7 +34,7 @@ class SearchViewModel @Inject constructor(
     /**
      * Obtain images from external source, match specified [query].
      */
-    fun fetchImages(query: String) {
+    fun getImages(query: String) {
         getImagesJob?.cancel()
         propagateLoading()
         val request = ImagesRequest(query)

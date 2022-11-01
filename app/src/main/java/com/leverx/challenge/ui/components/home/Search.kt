@@ -86,7 +86,7 @@ fun Search(
     Search(
         uiState = uiState,
         onSearchClick = { query ->
-            viewModel.fetchImages(query)
+            viewModel.getImages(query)
         },
         markImageAsViewed = { id ->
             viewModel.markImageAsViewed(id)
