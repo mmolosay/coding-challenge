@@ -1,11 +1,8 @@
 package com.leverx.challenge
 
-import androidx.activity.ComponentActivity
-import androidx.compose.ui.semantics.SemanticsProperties
-import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -26,8 +23,7 @@ import org.junit.runner.RunWith
 class SearchUiTests {
 
     @get:Rule
-//    val composeRule = createComposeRule()
-    val composeRule = createAndroidComposeRule<ComponentActivity>()
+    val composeRule = createComposeRule()
 
     /**
      * Tests, that text field's trailing "search" icon enables,
