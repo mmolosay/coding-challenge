@@ -54,7 +54,6 @@ class SearchViewModel @Inject constructor(
      */
     fun markImageAsViewed(id: Long?) {
         id ?: return
-        addViewedImageJob?.cancel()
         val context = Dispatchers.Default + Job()
         this.addViewedImageJob = viewModelScope.launch(context) {
             addViewedImageUseCase(id)
