@@ -1,7 +1,6 @@
 package com.leverx.challenge.ui.environment.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
@@ -37,9 +36,7 @@ private fun NavGraphBuilder.Search(
     navController: NavController,
 ) =
     composable(NavRoutes.Search) {
-        Search(
-            viewModel = hiltViewModel(),
-        )
+        Search()
     }
 
 private fun NavGraphBuilder.History(

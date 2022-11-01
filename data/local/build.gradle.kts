@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.leverx.challenge.data"
+    namespace = "com.leverx.challenge.local"
     compileSdk = 33
 
     defaultConfig {
@@ -36,11 +36,5 @@ android {
 dependencies {
 
     // Modules
-    api(project(":data:local"))
-    api(project(":data:remote"))
     implementation(project(":domain"))
-
-
-    // Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
 }
