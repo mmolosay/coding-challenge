@@ -37,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
@@ -156,7 +157,8 @@ private fun SearchBar(
             onValueChange = { input = it },
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f),
+                .weight(1f)
+                .testTag(TestTags.SearchField),
             label = {
                 SearchBarLabel()
             },
@@ -198,6 +200,7 @@ private fun SearchBarTrailingIcon(
     IconButton(
         onClick = onClick,
         enabled = enabled,
+        modifier = Modifier.testTag(TestTags.SearchFieldTrailingIcon)
     ) {
         Icon(
             imageVector = AppIcons.Search,
@@ -338,3 +341,8 @@ private fun SearchResultFailure() =
     }
 
 // endregion
+
+object TestTags {
+    const val SearchField = "search text field"
+    const val SearchFieldTrailingIcon = "trailing icon of search text field"
+}

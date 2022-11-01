@@ -114,6 +114,9 @@ dependencies {
 
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
 
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.3.0")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.3.0")
+
     // MockK
     testImplementation("io.mockk:mockk:1.12.4")
     testImplementation("io.mockk:mockk-agent-jvm:1.12.4")

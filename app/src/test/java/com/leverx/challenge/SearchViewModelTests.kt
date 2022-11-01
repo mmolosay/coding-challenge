@@ -27,7 +27,7 @@ import com.leverx.challenge.domain.model.ImagesData as DomainImagesData
  */
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(JUnit4::class)
-class SearchViewModelTest {
+class SearchViewModelTests {
 
     // Subject under test
     private lateinit var sutViewModel: SearchViewModel
