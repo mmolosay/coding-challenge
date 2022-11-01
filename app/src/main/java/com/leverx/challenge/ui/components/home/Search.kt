@@ -1,18 +1,27 @@
 package com.leverx.challenge.ui.components.home
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,14 +33,26 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.structuralEqualityPolicy
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
+import coil.size.Size
 import com.leverx.challenge.R
+import com.leverx.challenge.model.RemoteImages
+import com.leverx.challenge.ui.components.common.ImageDialog
 import com.leverx.challenge.ui.environment.AppIcons
 import com.leverx.challenge.ui.environment.AppTheme
 import com.leverx.challenge.ui.environment.Offset
+import com.leverx.challenge.ui.environment.disabledContentColor
 import com.leverx.challenge.viewmodel.SearchViewModel
+import com.leverx.challenge.viewmodel.SearchViewModel.UiState
 
 // region Previews
 
@@ -42,6 +63,7 @@ import com.leverx.challenge.viewmodel.SearchViewModel
 private fun Search_Preview() {
     AppTheme {
         Search(
+            uiState = UiState.Blank,
             onSearchClick = {},
         )
     }
@@ -52,32 +74,36 @@ private fun Search_Preview() {
 /**
  * High-level master `Search` UI component.
  */
+@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun Search(
-    vm: SearchViewModel,
-) =
+    viewModel: SearchViewModel = hiltViewModel(),
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     Search(
+        uiState = uiState,
         onSearchClick = { query ->
-            vm.findImages(query)
+            viewModel.fetchImages(query)
         },
     )
+}
 
 /**
- * Low-level primitivized implementation of 'Search' UI component.
+ * Implementation of 'Search' UI component.
  */
 @Composable
 fun Search(
+    uiState: UiState,
     onSearchClick: (String) -> Unit,
-) =
+) {
     Column {
         SearchBar(
             onSearchClick = onSearchClick,
         )
         Spacer(modifier = Modifier.height(Offset.Halved))
-        LazyColumn {
-            /* TODO: implement when item type is introduced */
-        }
+        SearchResult(uiState)
     }
+}
 
 // region Search Bar
 
@@ -162,6 +188,116 @@ private fun SearchBarTrailingIcon(
         Icon(
             imageVector = AppIcons.Search,
             contentDescription = stringResource(R.string.cd_home_search_find)
+        )
+    }
+
+// endregion
+
+// region Search result
+
+/**
+ * Master 'Search result' UI component.
+ * Represents search result, according to [uiState].
+ */
+@Composable
+private fun SearchResult(
+    uiState: UiState,
+) =
+    when (uiState) {
+        is UiState.Blank -> SearchResultBlank()
+        is UiState.Loading -> SearchResultLoading()
+        is UiState.Success -> SearchResultSuccess(uiState)
+        is UiState.Failure -> SearchResultFailure()
+    }
+
+/**
+ * Implementation of 'Search result' UI component's [UiState.Blank] state.
+ */
+@Composable
+private fun SearchResultBlank() =
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text = stringResource(R.string.home_search_blank),
+            color = disabledContentColor(),
+            style = MaterialTheme.typography.bodySmall,
+        )
+    }
+
+/**
+ * Implementation of 'Search result' UI component's [UiState.Loading] state.
+ */
+@Composable
+private fun SearchResultLoading() =
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center,
+    ) {
+        CircularProgressIndicator()
+    }
+
+/**
+ * Implementation of 'Search result' UI component's [UiState.Success] state.
+ */
+@Composable
+private fun SearchResultSuccess(uiState: UiState.Success) =
+    LazyColumn(
+        modifier = Modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(horizontal = Offset.Regular),
+        verticalArrangement = Arrangement.spacedBy(Offset.Halved),
+    ) {
+        items(
+            items = uiState.remoteImages.images ?: emptyList(),
+            key = { it.id },
+        ) { image ->
+            ImageItem(image)
+        }
+    }
+
+@Composable
+private fun ImageItem(image: RemoteImages.Image) {
+    var showImageDialog by remember { mutableStateOf(false) }
+
+    val model = ImageRequest.Builder(LocalContext.current)
+        .data(image.url)
+        .size(Size.ORIGINAL)
+        .crossfade(true)
+        .build()
+    val painter = rememberAsyncImagePainter(model)
+
+    Image(
+        painter = painter,
+        contentDescription = image.title,
+        contentScale = ContentScale.FillWidth,
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { showImageDialog = true },
+    )
+
+    if (showImageDialog) {
+        ImageDialog(onDismissRequest = { showImageDialog = false }) {
+            Image(
+                painter = painter,
+                contentDescription = image.title,
+                contentScale = ContentScale.FillWidth,
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
+    }
+}
+
+@Composable
+private fun SearchResultFailure() =
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text = stringResource(R.string.home_search_failure),
+            color = disabledContentColor(),
+            style = MaterialTheme.typography.bodySmall,
         )
     }
 

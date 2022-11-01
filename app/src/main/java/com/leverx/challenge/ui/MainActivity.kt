@@ -7,7 +7,9 @@ import androidx.core.view.WindowCompat
 import com.leverx.challenge.ui.components.Application
 import com.leverx.challenge.ui.components.common.Screen
 import com.leverx.challenge.ui.environment.AppTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

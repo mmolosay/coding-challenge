@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "com.leverx.news"
-        minSdk = 23
+        minSdk = 24
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -57,6 +57,8 @@ android {
 dependencies {
 
     // Modules
+    implementation(project(":core"))
+    implementation(project(":domain"))
 
     // Jetpack
     implementation("androidx.core:core-ktx:1.9.0")

@@ -5,11 +5,9 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.rounded.List
 import androidx.compose.material.icons.rounded.Search
-import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -26,12 +24,11 @@ import com.leverx.challenge.ui.environment.navigation.NavRoutes
 
 @Composable
 @Preview
-private fun HomeScreen_Preview() {
-    HomeScreen(
-        currentRoute = NavRoutes.Home.Search,
+private fun Home_Preview() {
+    Home(
+        currentRoute = NavRoutes.Search,
         navigateToSearch = {},
         navigateToHistory = {},
-        navigateToSettings = {}
     ) {
         // navigation content
     }
@@ -44,18 +41,15 @@ private fun HomeScreen_Preview() {
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(
+fun Home(
     currentRoute: String?,
-    navigateToSettings: () -> Unit,
     navigateToSearch: () -> Unit,
     navigateToHistory: () -> Unit,
     content: @Composable () -> Unit
 ) {
     Scaffold(
         topBar = {
-            AppBar(
-                navigateToSettings = navigateToSettings,
-            )
+            AppBar()
         },
         bottomBar = {
             BottomBar(
@@ -75,29 +69,15 @@ fun HomeScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun AppBar(
-    navigateToSettings: () -> Unit,
-) =
+private fun AppBar() =
     TopAppBar(
         title = {
             Text(text = stringResource(R.string.app_name))
         },
         actions = {
-            SettingsAction(onClick = navigateToSettings)
+            // empty
         }
     )
-
-@Suppress("unused") // receiver
-@Composable
-private fun RowScope.SettingsAction(
-    onClick: () -> Unit
-) =
-    IconButton(onClick = onClick) {
-        Icon(
-            imageVector = AppIcons.Settings,
-            contentDescription = stringResource(R.string.cd_settings)
-        )
-    }
 
 // endregion
 
@@ -111,11 +91,11 @@ private fun BottomBar(
 ) =
     BottomAppBar {
         SearchItem(
-            selected = (currentRoute == NavRoutes.Home.Search),
+            selected = (currentRoute == NavRoutes.Search),
             onClick = navigateToSearch,
         )
         HistoryItem(
-            selected = (currentRoute == NavRoutes.Home.History),
+            selected = (currentRoute == NavRoutes.History),
             onClick = navigateToHistory,
         )
     }
