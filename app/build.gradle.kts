@@ -70,6 +70,7 @@ dependencies {
     implementation("androidx.compose.foundation:foundation:1.3.0")
     implementation("androidx.navigation:navigation-compose:2.5.2")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+    implementation("androidx.compose.material3:material3-window-size-class:1.1.0-alpha01")
 
     // Design
     implementation("androidx.compose.material3:material3:1.0.0")
