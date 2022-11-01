@@ -1,9 +1,9 @@
 package com.leverx.challenge.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import com.leverx.challenge.domain.model.RemoteImagesRequest
+import com.leverx.challenge.domain.model.ImagesRequest
 import com.leverx.challenge.domain.usecase.UseCase
-import com.leverx.challenge.model.RemoteImages
+import com.leverx.challenge.model.ImagesData
 import com.leverx.challenge.model.mapper.toPresentation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -17,33 +17,46 @@ import javax.inject.Inject
 /**
  * `ViewModel` for 'Search' UI component.
  *
- * @see [com.leverx.challenge.ui.components.home.Search]
+ * @see com.leverx.challenge.ui.components.home.Search
  */
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val getImages: UseCase.GetImages,
+    private val getImagesUseCase: UseCase.GetImages,
+    private val addViewedImageUseCase: UseCase.AddViewedImage
 ) : BaseViewModel() {
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Blank)
     val uiState = _uiState.asStateFlow()
 
     private var getImagesJob: Job? = null
+    private var addViewedImageJob: Job? = null
 
     /**
      * Obtain images from external source, match specified [query].
      */
-    fun fetchImages(query: String) {
+    fun getImages(query: String) {
         getImagesJob?.cancel()
         propagateLoading()
-        val request = RemoteImagesRequest(query)
+        val request = ImagesRequest(query)
         val context = Dispatchers.IO + Job()
         this.getImagesJob = viewModelScope.launch(context) {
             try {
-                val images = getImages(request)
+                val images = getImagesUseCase(request)
                 propagateSuccess(images.toPresentation())
             } catch (e: Exception) { // TODO: specify exact type of exception(s) once occured
                 propagateFailure()
             }
+        }
+    }
+
+    /**
+     * Marks image with specified [id] as viewed.
+     */
+    fun markImageAsViewed(id: Long?) {
+        id ?: return
+        val context = Dispatchers.Default + Job()
+        this.addViewedImageJob = viewModelScope.launch(context) {
+            addViewedImageUseCase(id)
         }
     }
 
@@ -58,10 +71,10 @@ class SearchViewModel @Inject constructor(
     /**
      * Updates [uiState] with [UiState.Success] instance.
      */
-    private fun propagateSuccess(images: RemoteImages) =
+    private fun propagateSuccess(images: ImagesData) =
         _uiState.update {
             UiState.Success(
-                remoteImages = images,
+                imagesData = images,
             )
         }
 
@@ -73,6 +86,14 @@ class SearchViewModel @Inject constructor(
             UiState.Failure
         }
 
+    override fun onCleared() {
+        super.onCleared()
+        getImagesJob?.cancel()
+        getImagesJob = null
+        addViewedImageJob?.cancel()
+        addViewedImageJob = null
+    }
+
     sealed interface UiState {
 
         /** Initial state; no actions performed, no data displayed. */
@@ -83,7 +104,7 @@ class SearchViewModel @Inject constructor(
 
         /** Images successfully loaded and can be displayed now. */
         class Success(
-            val remoteImages: RemoteImages,
+            val imagesData: ImagesData,
         ) : UiState
 
         /** Failure during loading images. */

@@ -70,6 +70,7 @@ dependencies {
     implementation("androidx.compose.foundation:foundation:1.3.0")
     implementation("androidx.navigation:navigation-compose:2.5.2")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+    implementation("androidx.compose.material3:material3-window-size-class:1.1.0-alpha01")
 
     // Design
     implementation("androidx.compose.material3:material3:1.0.0")
@@ -104,8 +105,19 @@ dependencies {
     kapt("com.google.dagger:hilt-compiler:2.44")
 
     // Testing
+
+    testImplementation("junit:junit:4.13.2")
     testImplementation("androidx.arch.core:core-testing:2.1.0")
     testImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test:core:1.4.0")
+
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.3.0")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.3.0")
+
+    // MockK
+    testImplementation("io.mockk:mockk:1.12.4")
+    testImplementation("io.mockk:mockk-agent-jvm:1.12.4")
 }

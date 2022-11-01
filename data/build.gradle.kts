@@ -36,6 +36,7 @@ android {
 dependencies {
 
     // Modules
+    api(project(":data:local"))
     api(project(":data:remote"))
     implementation(project(":domain"))
 

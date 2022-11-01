@@ -8,13 +8,12 @@ import okhttp3.Response
  */
 class QueryParameterInterceptor(
     private val queryParameter: String,
-    private val value: String?,
+    private val value: String,
 ) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        val key = requireNotNull(value) { "queryParameter is required" }
         val url = chain.request().url.newBuilder()
-            .addQueryParameter(queryParameter, key)
+            .addQueryParameter(queryParameter, value)
             .build()
         val request = chain.request().newBuilder()
             .url(url)

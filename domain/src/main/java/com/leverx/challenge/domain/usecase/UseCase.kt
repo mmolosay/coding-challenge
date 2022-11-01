@@ -1,7 +1,9 @@
 package com.leverx.challenge.domain.usecase
 
-import com.leverx.challenge.domain.model.RemoteImages
-import com.leverx.challenge.domain.model.RemoteImagesRequest
+import com.leverx.challenge.domain.model.ImagesData
+import com.leverx.challenge.domain.model.ImagesRequest
+import com.leverx.challenge.domain.model.ViewedImage
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Set of use case declarations.
@@ -9,9 +11,27 @@ import com.leverx.challenge.domain.model.RemoteImagesRequest
 object UseCase {
 
     /**
-     * Retrieves [RemoteImages].
+     * Retrieves [ImagesData].
      */
     interface GetImages {
-        suspend operator fun invoke(request: RemoteImagesRequest): RemoteImages
+        suspend operator fun invoke(request: ImagesRequest): ImagesData
+    }
+
+    /**
+     * Retrieves [ViewedImage]s.
+     */
+    interface GetViewedImages {
+        suspend operator fun invoke(): Flow<List<ViewedImage>>
+    }
+
+    /**
+     * Adds image with specified ID to list of viewed ones.
+     */
+    interface AddViewedImage {
+
+        /**
+         * @return `true`, if image was found by [id] and added to viewed ones, `false` otherwise.
+         */
+        suspend operator fun invoke(id: Long): Boolean
     }
 }

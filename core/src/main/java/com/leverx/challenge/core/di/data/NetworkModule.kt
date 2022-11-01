@@ -29,7 +29,7 @@ class NetworkModule {
         client: OkHttpClient,
     ): Retrofit =
         Retrofit.Builder()
-            .baseUrl(" https://www.flickr.com/")
+            .baseUrl("https://www.flickr.com/")
             .client(client)
             .addConverterFactory(MoshiConverterFactory.create())
             .build()

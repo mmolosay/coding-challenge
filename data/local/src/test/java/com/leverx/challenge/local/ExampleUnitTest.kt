@@ -1,4 +1,4 @@
-package com.leverx.challenge
+package com.leverx.challenge.local
 
 import org.junit.Test
 

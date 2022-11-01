@@ -4,20 +4,23 @@ package com.leverx.challenge.domain.model
 /**
  * Represents various data about some remote images.
  */
-data class RemoteImages(
-    val images: List<Image>?
+data class ImagesData(
+    val images: List<RemoteImage>?
 ) {
 
     /**
      * Represents not an image itself, but its remote source.
      */
-    data class Image(
+    data class RemoteImage(
         val id: Long?,
         val url: String?,
         val title: String?,
     )
 }
 
-data class RemoteImagesRequest(
+/**
+ * Request to obtain [ImagesData] that satisfies specified parameters.
+ */
+data class ImagesRequest(
     val query: String,
 )

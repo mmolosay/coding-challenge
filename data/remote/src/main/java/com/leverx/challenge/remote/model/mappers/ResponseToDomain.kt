@@ -1,19 +1,19 @@
 package com.leverx.challenge.remote.model.mappers
 
-import com.leverx.challenge.domain.model.RemoteImages
+import com.leverx.challenge.domain.model.ImagesData
 import com.leverx.challenge.remote.model.ImagesResponse
 
 /*
  * Maps "response" objects to their "domain" variants.
  */
 
-fun ImagesResponse.toDomain(): RemoteImages =
-    RemoteImages(
+fun ImagesResponse.toDomain(): ImagesData =
+    ImagesData(
         images = this.data?.images?.map { it.toDomain() },
     )
 
-private fun ImagesResponse.Image.toDomain(): RemoteImages.Image =
-    RemoteImages.Image(
+private fun ImagesResponse.Image.toDomain(): ImagesData.RemoteImage =
+    ImagesData.RemoteImage(
         id = this.id,
         url = this.toUrl(),
         title = this.title,

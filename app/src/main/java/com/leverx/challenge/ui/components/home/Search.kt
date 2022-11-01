@@ -32,9 +32,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.structuralEqualityPolicy
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
@@ -45,7 +48,7 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
 import com.leverx.challenge.R
-import com.leverx.challenge.model.RemoteImages
+import com.leverx.challenge.model.ImagesData
 import com.leverx.challenge.ui.components.common.ImageDialog
 import com.leverx.challenge.ui.environment.AppIcons
 import com.leverx.challenge.ui.environment.AppTheme
@@ -65,6 +68,7 @@ private fun Search_Preview() {
         Search(
             uiState = UiState.Blank,
             onSearchClick = {},
+            markImageAsViewed = {}
         )
     }
 }
@@ -83,8 +87,11 @@ fun Search(
     Search(
         uiState = uiState,
         onSearchClick = { query ->
-            viewModel.fetchImages(query)
+            viewModel.getImages(query)
         },
+        markImageAsViewed = { id ->
+            viewModel.markImageAsViewed(id)
+        }
     )
 }
 
@@ -95,13 +102,17 @@ fun Search(
 fun Search(
     uiState: UiState,
     onSearchClick: (String) -> Unit,
+    markImageAsViewed: (Long) -> Unit,
 ) {
     Column {
         SearchBar(
             onSearchClick = onSearchClick,
         )
         Spacer(modifier = Modifier.height(Offset.Halved))
-        SearchResult(uiState)
+        SearchResult(
+            uiState = uiState,
+            markImageAsViewed = markImageAsViewed,
+        )
     }
 }
 
@@ -124,7 +135,7 @@ private fun SearchBar(
 /**
  * Implementation of search bar.
  */
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 private fun SearchBar(
     modifier: Modifier = Modifier,
@@ -140,12 +151,14 @@ private fun SearchBar(
                 input.isNotEmpty()
             }
         }
+        val keyboardController = LocalSoftwareKeyboardController.current
         OutlinedTextField(
             value = input,
             onValueChange = { input = it },
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f),
+                .weight(1f)
+                .testTag(TestTags.SearchField),
             label = {
                 SearchBarLabel()
             },
@@ -159,7 +172,10 @@ private fun SearchBar(
                 imeAction = ImeAction.Search,
             ),
             keyboardActions = KeyboardActions(
-                onSearch = { onSearchClick(input) }
+                onSearch = {
+                    onSearchClick(input)
+                    keyboardController?.hide()
+                }
             ),
         )
     }
@@ -184,6 +200,7 @@ private fun SearchBarTrailingIcon(
     IconButton(
         onClick = onClick,
         enabled = enabled,
+        modifier = Modifier.testTag(TestTags.SearchFieldTrailingIcon)
     ) {
         Icon(
             imageVector = AppIcons.Search,
@@ -202,12 +219,20 @@ private fun SearchBarTrailingIcon(
 @Composable
 private fun SearchResult(
     uiState: UiState,
+    markImageAsViewed: (Long) -> Unit,
 ) =
     when (uiState) {
-        is UiState.Blank -> SearchResultBlank()
-        is UiState.Loading -> SearchResultLoading()
-        is UiState.Success -> SearchResultSuccess(uiState)
-        is UiState.Failure -> SearchResultFailure()
+        is UiState.Blank ->
+            SearchResultBlank()
+        is UiState.Loading ->
+            SearchResultLoading()
+        is UiState.Success ->
+            SearchResultSuccess(
+                uiState = uiState,
+                markImageAsViewed = markImageAsViewed,
+            )
+        is UiState.Failure ->
+            SearchResultFailure()
     }
 
 /**
@@ -242,22 +267,31 @@ private fun SearchResultLoading() =
  * Implementation of 'Search result' UI component's [UiState.Success] state.
  */
 @Composable
-private fun SearchResultSuccess(uiState: UiState.Success) =
+private fun SearchResultSuccess(
+    uiState: UiState.Success,
+    markImageAsViewed: (Long) -> Unit,
+) =
     LazyColumn(
         modifier = Modifier.fillMaxWidth(),
         contentPadding = PaddingValues(horizontal = Offset.Regular),
         verticalArrangement = Arrangement.spacedBy(Offset.Halved),
     ) {
         items(
-            items = uiState.remoteImages.images ?: emptyList(),
+            items = uiState.imagesData.images ?: emptyList(),
             key = { it.id },
         ) { image ->
-            ImageItem(image)
+            ImageItem(
+                image = image,
+                markImageAsViewed = markImageAsViewed,
+            )
         }
     }
 
 @Composable
-private fun ImageItem(image: RemoteImages.Image) {
+private fun ImageItem(
+    image: ImagesData.RemoteImage,
+    markImageAsViewed: (Long) -> Unit,
+) {
     var showImageDialog by remember { mutableStateOf(false) }
 
     val model = ImageRequest.Builder(LocalContext.current)
@@ -273,7 +307,10 @@ private fun ImageItem(image: RemoteImages.Image) {
         contentScale = ContentScale.FillWidth,
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { showImageDialog = true },
+            .clickable {
+                showImageDialog = true
+                markImageAsViewed(image.id)
+            },
     )
 
     if (showImageDialog) {
@@ -281,8 +318,10 @@ private fun ImageItem(image: RemoteImages.Image) {
             Image(
                 painter = painter,
                 contentDescription = image.title,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = Offset.Regular),
                 contentScale = ContentScale.FillWidth,
-                modifier = Modifier.fillMaxWidth(),
             )
         }
     }
@@ -302,3 +341,8 @@ private fun SearchResultFailure() =
     }
 
 // endregion
+
+object TestTags {
+    const val SearchField = "search text field"
+    const val SearchFieldTrailingIcon = "trailing icon of search text field"
+}
