@@ -23,11 +23,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import com.leverx.challenge.R
+import com.leverx.challenge.ui.components.common.PreviewStub
 import com.leverx.challenge.ui.environment.AppIcons
 import com.leverx.challenge.ui.environment.AppTheme
-import com.leverx.challenge.ui.environment.Offset
 import com.leverx.challenge.ui.environment.composition.AppPreviewCompositionLocalProvider
 import com.leverx.challenge.ui.environment.composition.PreviewWindowSizeClasses
 import com.leverx.challenge.ui.environment.composition.WindowSize
@@ -36,7 +37,10 @@ import com.leverx.challenge.ui.environment.navigation.NavRoutes
 // region Previews
 
 @Composable
-@Preview
+@Preview(
+    showBackground = true,
+    device = Devices.DEFAULT,
+)
 private fun Home_Compact_Preview() {
     AppPreviewCompositionLocalProvider(
         windowSizeClass = PreviewWindowSizeClasses.Phone,
@@ -46,14 +50,17 @@ private fun Home_Compact_Preview() {
                 currentRoute = NavRoutes.Search,
                 navigateToSearch = {},
                 navigateToHistory = {},
-                content = {},
+                content = { PreviewStub("Navigation content") },
             )
         }
     }
 }
 
 @Composable
-@Preview
+@Preview(
+    showBackground = true,
+    device = Devices.TABLET,
+)
 private fun Home_Medium_Preview() {
     AppPreviewCompositionLocalProvider(
         windowSizeClass = PreviewWindowSizeClasses.Tablet,
@@ -63,7 +70,7 @@ private fun Home_Medium_Preview() {
                 currentRoute = NavRoutes.Search,
                 navigateToSearch = {},
                 navigateToHistory = {},
-                content = {},
+                content = { PreviewStub("Navigation content") },
             )
         }
     }
