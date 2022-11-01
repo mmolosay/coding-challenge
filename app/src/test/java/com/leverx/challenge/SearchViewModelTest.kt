@@ -50,7 +50,7 @@ class SearchViewModelTest {
     private val scope = TestScope(job + StandardTestDispatcher())
 
     @Before
-    fun init() {
+    fun setUp() {
         MockKAnnotations.init(this)
         this.sutViewModel = SearchViewModel(
             getImagesUseCase = docGetImagesUseCase,
