@@ -38,7 +38,7 @@ private fun NavGraphBuilder.Search(
 ) =
     composable(NavRoutes.Search) {
         Search(
-            vm = hiltViewModel(),
+            viewModel = hiltViewModel(),
         )
     }
 

@@ -77,13 +77,13 @@ private fun Search_Preview() {
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun Search(
-    vm: SearchViewModel = hiltViewModel(),
+    viewModel: SearchViewModel = hiltViewModel(),
 ) {
-    val uiState by vm.uiState.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     Search(
         uiState = uiState,
         onSearchClick = { query ->
-            vm.fetchImages(query)
+            viewModel.fetchImages(query)
         },
     )
 }
@@ -281,6 +281,8 @@ private fun ImageItem(image: RemoteImages.Image) {
             Image(
                 painter = painter,
                 contentDescription = image.title,
+                contentScale = ContentScale.FillWidth,
+                modifier = Modifier.fillMaxWidth(),
             )
         }
     }
