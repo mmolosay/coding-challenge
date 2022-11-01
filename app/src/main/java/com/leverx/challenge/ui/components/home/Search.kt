@@ -207,7 +207,7 @@ private fun SearchResult(
         is UiState.Blank -> SearchResultBlank()
         is UiState.Loading -> SearchResultLoading()
         is UiState.Success -> SearchResultSuccess(uiState)
-        is UiState.Failure -> throw IllegalStateException("handle me!") // TODO
+        is UiState.Failure -> SearchResultFailure()
     }
 
 /**
@@ -285,5 +285,18 @@ private fun ImageItem(image: RemoteImages.Image) {
         }
     }
 }
+
+@Composable
+private fun SearchResultFailure() =
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text = stringResource(R.string.home_search_failure),
+            color = disabledContentColor(),
+            style = MaterialTheme.typography.bodySmall,
+        )
+    }
 
 // endregion
