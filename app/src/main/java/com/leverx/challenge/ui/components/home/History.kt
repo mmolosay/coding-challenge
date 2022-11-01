@@ -2,10 +2,13 @@ package com.leverx.challenge.ui.components.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
@@ -50,14 +53,11 @@ fun History(
 @Composable
 fun History(
     images: List<ViewedImage>,
-) =
+) {
     LazyColumn(
-        contentPadding = PaddingValues(
-            horizontal = Offset.Regular,
-            vertical = Offset.Halved
-        ),
+        contentPadding = PaddingValues(horizontal = Offset.Regular),
         reverseLayout = true,
-        verticalArrangement = Arrangement.spacedBy(Offset.Regular),
+        verticalArrangement = Arrangement.spacedBy(Offset.Halved),
     ) {
         items(
             items = images,
@@ -66,6 +66,7 @@ fun History(
             HistoryItem(image)
         }
     }
+}
 
 @Composable
 private fun HistoryItem(
@@ -73,5 +74,7 @@ private fun HistoryItem(
 ) =
     AsyncImage(
         model = image.url,
-        contentDescription = image.title
+        contentDescription = image.title,
+        modifier = Modifier.fillMaxWidth(),
+        contentScale = ContentScale.FillWidth,
     )
