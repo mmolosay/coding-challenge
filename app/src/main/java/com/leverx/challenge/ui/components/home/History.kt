@@ -56,6 +56,7 @@ fun History(
             horizontal = Offset.Regular,
             vertical = Offset.Halved
         ),
+        reverseLayout = true,
         verticalArrangement = Arrangement.spacedBy(Offset.Regular),
     ) {
         items(

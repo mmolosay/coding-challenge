@@ -9,6 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -36,8 +37,10 @@ class HistoryViewModel @Inject constructor(
         getViewedImagesJob?.cancel()
         val context = Dispatchers.Default + Job()
         viewModelScope.launch(context) {
-            val images = getViewedImagesUseCase().toPresentation()
-            _viewedImages.update { images }
+            getViewedImagesUseCase().collect { data ->
+                val images = data.toPresentation()
+                _viewedImages.update { images }
+            }
         }
     }
 

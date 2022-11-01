@@ -3,6 +3,7 @@ package com.leverx.challenge.domain.usecase
 import com.leverx.challenge.domain.model.ImagesData
 import com.leverx.challenge.domain.model.ImagesRequest
 import com.leverx.challenge.domain.model.ViewedImage
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Set of use case declarations.
@@ -20,7 +21,7 @@ object UseCase {
      * Retrieves [ViewedImage]s.
      */
     interface GetViewedImages {
-        suspend operator fun invoke(): List<ViewedImage> // TODO: Flow?
+        suspend operator fun invoke(): Flow<List<ViewedImage>>
     }
 
     /**
