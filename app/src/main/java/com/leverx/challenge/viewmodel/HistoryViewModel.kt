@@ -29,10 +29,10 @@ class HistoryViewModel @Inject constructor(
     private var getViewedImagesJob: Job? = null
 
     init {
-        updateViewedImages()
+        getViewiedImages()
     }
 
-    private fun updateViewedImages() {
+    private fun getViewiedImages() {
         getViewedImagesJob?.cancel()
         val context = Dispatchers.Default + Job()
         viewModelScope.launch(context) {

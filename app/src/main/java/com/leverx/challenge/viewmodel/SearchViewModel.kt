@@ -21,8 +21,8 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val getImages: UseCase.GetImages,
-    private val addViewedImage: UseCase.AddViewedImage
+    private val getImagesUseCase: UseCase.GetImages,
+    private val addViewedImageUseCase: UseCase.AddViewedImage
 ) : BaseViewModel() {
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Blank)
@@ -41,7 +41,7 @@ class SearchViewModel @Inject constructor(
         val context = Dispatchers.IO + Job()
         this.getImagesJob = viewModelScope.launch(context) {
             try {
-                val images = getImages(request)
+                val images = getImagesUseCase(request)
                 propagateSuccess(images.toPresentation())
             } catch (e: Exception) { // TODO: specify exact type of exception(s) once occured
                 propagateFailure()
@@ -57,7 +57,7 @@ class SearchViewModel @Inject constructor(
         addViewedImageJob?.cancel()
         val context = Dispatchers.Default + Job()
         this.addViewedImageJob = viewModelScope.launch(context) {
-            addViewedImage(id)
+            addViewedImageUseCase(id)
         }
     }
 
