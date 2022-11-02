@@ -8,11 +8,10 @@ plugins {
 android {
 
     namespace = "com.leverx.challenge"
-
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.leverx.news"
+        applicationId = "com.leverx.challenge"
         minSdk = 24
         targetSdk = 33
         versionCode = 1

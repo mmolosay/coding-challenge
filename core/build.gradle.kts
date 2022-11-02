@@ -24,6 +24,10 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            resValue("string", "flickr_api_key", "9f1a654fcf398e59e524a7d09146a484")
+        }
+        debug {
+            resValue("string", "flickr_api_key", "9f1a654fcf398e59e524a7d09146a484")
         }
     }
     compileOptions {
