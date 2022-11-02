@@ -15,6 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CodingChallenge.DayNight"
         tools:targetApi="31">
+
         <activity
             android:name=".ui.MainActivity"
             android:exported="true">
@@ -27,6 +28,21 @@
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
+        </activity>
+
+        <!-- https://github.com/android/android-test/issues/1412 -->
+        <!-- temporary fix for UI testing; remove once stable androidx.test:core:1.5.0 is released -->
+        <activity
+            android:name="androidx.test.core.app.InstrumentationActivityInvoker$BootstrapActivity"
+            android:exported="true"
+            tools:node="merge">
+            <intent-filter tools:node="removeAll" />
+        </activity>
+        <activity
+            android:name="androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity"
+            android:exported="true"
+            tools:node="merge">
+            <intent-filter tools:node="removeAll" />
         </activity>
     </application>
 
