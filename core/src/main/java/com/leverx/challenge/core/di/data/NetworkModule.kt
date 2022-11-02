@@ -1,9 +1,12 @@
 package com.leverx.challenge.core.di.data
 
+import android.content.Context
+import com.leverx.challenge.core.R
 import com.leverx.challenge.remote.api.FlickrApiService
 import com.leverx.challenge.remote.interceptor.Interceptors
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.migration.DisableInstallInCheck
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -36,11 +39,13 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(): OkHttpClient {
+    fun provideOkHttpClient(
+        @ApplicationContext context: Context,
+    ): OkHttpClient {
         val loggingInterceptor = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
-        val apiKey = "9f1a654fcf398e59e524a7d09146a484" // TODO
+        val apiKey = context.getString(R.string.flickr_api_key) // TODO
         val apiKeyInterceptor = Interceptors.FlickrApiKeyInterceptor(apiKey)
         return OkHttpClient.Builder()
             .connectTimeout(10L, TimeUnit.SECONDS)
