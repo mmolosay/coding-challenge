@@ -8,7 +8,6 @@ plugins {
 android {
 
     namespace = "com.leverx.challenge"
-
     compileSdk = 33
 
     defaultConfig {
